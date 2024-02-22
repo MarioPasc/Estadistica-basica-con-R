@@ -82,6 +82,24 @@ calc_percentil_k <- function(ck, datos) {
   resultado <- ((ck - li_1) * (datos$ni[fila] / ai) + datos$Ni[fila-1] ) * 1/sum(datos$ni) 
   return(resultado)
 }
+
+# Dato un valor k tal que k < 1 (es decir, no en porcentaje sobre 100, sino en decimal) se calcula el decil. Por ejemplo, para calcular Q1 podríamos dar k = 0.25, el P99, k = 0.99, etc
+calc_decil_k <- function(datos, k) {
+  return(min(datos$xi[datos$Fi >= k]))
+}
+
+# Dada una tabla de frecuencias y, opcionalmente, un coeficiente diferente a 1,5 podemos calcular todos los outlier de la distribución.
+calc_outliers <- function(datos, coeficiente = 1.5) {
+  Q1 <- calc_decil_k(datos, 0.25)
+  Q3 <- calc_decil_k(datos, 0.75)
+  IQR <- Q3 - Q1
+  IS <- Q3 + coeficiente * IQR
+  II <- Q1 - coeficiente * IQR
+  outliers <- datos$xi[sapply(datos$ni, function(valor) {
+    valor > IS || valor < II
+  })]
+  return(outliers)
+}
 ```
 ### Primer Ejercicio
 
@@ -209,5 +227,38 @@ datos <- data.frame(
 )
 
 calc_percentil_k(437, datos)
-
 ```
+
+### Ejercicio 8
+
+```{r}
+xi <- c(15,20,21,25,28,29,33,41)
+ni <- c(30,25,30,52,45,20,10,1)
+fi <- calc_fi(datos_in = xi, ni_in = ni)
+Ni <- calc_acumulada(frecuencia_in = ni)
+Fi <- calc_acumulada(frecuencia_in = fi)
+
+datos <- data.frame(
+  xi = xi,
+  ni = ni,
+  fi = fi,
+  Ni = Ni,
+  Fi = Fi
+)
+
+calc_outliers(datos)
+```
+Como podemos observar, se han calculado los outliers con un coeficiente predeterminado de 1.5, sin embargo, la función está hecha para que podamos modificar el intervalo de confianza que tenemos para clasificar un datos como outlier o no. 
+
+
+
+
+
+
+
+
+
+
+
+
+
