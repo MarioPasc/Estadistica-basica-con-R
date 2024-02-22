@@ -8,6 +8,10 @@ output:
     df_print: paged
 ---
 
+```{r setup}
+knitr::opts_chunk$set(fig.align='center', fig.width=6, fig.height=4, out.width='70%')
+```
+
 ## Funciones
 
 Aquí incluyo todas las funciones que he ido desarrollando a lo largo de los ejercicios. 
@@ -189,6 +193,47 @@ moda <- calc_moda(resultado)
 
 print(paste("Media: ", media, "Mediana: ", mediana, "Moda: ", paste(moda, collapse = ", ")))
 ```
+
+### Ejercicio 3
+
+```{r}
+library(ggplot2)
+xi <- c(1,2,3,4,5)
+fi_x <- c(0.02,0.02,0.02,0.02,0.02)
+datos_x <- data.frame(
+  xi = xi,
+  fi = fi_x
+)
+yi <- c(-1,2,3,4,7)
+fi_y <- c(0.05, 0.2, 0.5, 0.2, 0.05)
+datos_y <- data.frame(
+  xi = yi,
+  fi = fi_y
+)
+
+calc_media_ponderada(datos_x)
+
+apuntamiento_x <- (calc_momento(datos = datos_x, orden = 4) / calc_sd(datos = datos_x)^4 ) - 3
+apuntamiento_y <- (calc_momento(datos = datos_y, orden = 4) / calc_sd(datos = datos_y)^4 ) - 3
+
+print(paste("Apuntamiento x: ", apuntamiento_x, "Apuntamiento y: ", apuntamiento_y))
+
+# Calcular la media y desviación estándar para los datos_x y datos_y
+media_x <- calc_media_ponderada(datos = datos_x)
+sd_x <- calc_sd(datos = datos_x)
+
+media_y <- calc_media_ponderada(datos = datos_y)
+sd_y <- calc_sd(datos = datos_y)
+
+# Crear el gráfico
+ggplot() +
+  geom_point(data = datos_x, aes(x = xi, y = fi), color = "blue") +
+  geom_point(data = datos_y, aes(x = xi, y = fi), color = "red") +
+  theme_minimal() +
+  labs(x = "Valor", y = "Frecuencia", title = "Distribuciones y Curvas Normales")
+
+```
+
 
 ### Ejercicio 4
 
