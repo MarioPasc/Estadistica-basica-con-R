@@ -100,6 +100,21 @@ calc_outliers <- function(datos, coeficiente = 1.5) {
   })]
   return(outliers)
 }
+
+# Dadas dos poblaciones como vectores, compara sus dispersiones usando el coeficiente de variación. 
+
+comparar_dispersion <- function(p1, p2) {
+  cv1 <- sd(p1) / abs(mean(p1))
+  cv2 <- sd(p2) / abs(mean(p2))
+  if (cv1 > cv2) {
+    return("p1 tiene una mayor dispersión")
+  } else if (cv1 < cv2) {
+    return("p2 tiene una mayor dispersión")
+  } else {
+    return("Ambas poblaciones tienen la misma dispersión")
+  }
+}
+
 ```
 ### Primer Ejercicio
 
@@ -249,6 +264,34 @@ datos <- data.frame(
 calc_outliers(datos)
 ```
 Como podemos observar, se han calculado los outliers con un coeficiente predeterminado de 1.5, sin embargo, la función está hecha para que podamos modificar el intervalo de confianza que tenemos para clasificar un datos como outlier o no. 
+
+### Ejercicio 9
+
+```{r}
+library(ggplot2)
+
+# Crear un data.frame con los datos
+p1 <- c(65, 60, 65, 63, 68, 70, 66, 71)
+p2 <- c(170, 150, 168, 170, 175, 171, 160, 180)
+
+# Crear un data.frame con todos los datos y una columna para identificar el grupo
+datos <- data.frame(
+  valor = c(p1, p2),
+  grupo = rep(c("Peso", "Altura"), each = length(p1)),
+  x = rep(1:length(p1), 2)
+)
+
+# Gráfico usando ggplot2
+ggplot(datos, aes(x = x, y = valor, color = grupo)) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "Observación", y = "Valor", title = "Comparación de Dispersión") +
+  scale_color_manual(values = c("Peso" = "blue", "Altura" = "red"))
+
+
+comparar_dispersion(p1, p2)
+
+```
 
 
 
