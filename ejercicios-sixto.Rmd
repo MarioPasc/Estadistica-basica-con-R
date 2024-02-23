@@ -8,7 +8,7 @@ output:
     df_print: paged
 ---
 
-```{r setup}
+```{r setup, ECHO = FALSE}
 knitr::opts_chunk$set(fig.align='center', fig.width=6, fig.height=4, out.width='70%')
 ```
 
