@@ -199,7 +199,7 @@ print(paste("Media: ", media, "Mediana: ", mediana, "Moda: ", paste(moda, collap
 ```{r}
 library(ggplot2)
 xi <- c(1,2,3,4,5)
-fi_x <- c(0.02,0.02,0.02,0.02,0.02)
+fi_x <- c(0.2,0.2,0.2,0.2,0.2)
 datos_x <- data.frame(
   xi = xi,
   fi = fi_x
